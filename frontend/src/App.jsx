@@ -1,7 +1,13 @@
+import Header from "./components/Header";
+import GlobalStyle from "./GlobalStyle";
+import { Outlet } from "react-router-dom";
+
 function App() {
   return (
     <>
-      <h1>Hello</h1>
+      <GlobalStyle />
+      <Header></Header>
+      <Outlet></Outlet>
     </>
   );
 }
