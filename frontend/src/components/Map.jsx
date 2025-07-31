@@ -9,7 +9,7 @@ const Map = ({ src, alt, options }) => {
   const [points, setPoints] = useState({ x: 0, y: 0 });
   const imgRef = useRef(null);
   function handleClick(e) {
-    setPopup(true);
+    setPopup((prev) => (prev ? false : true));
     const coord = { x: e.clientX, y: e.clientY };
     const offset = {
       x: imgRef.current.offsetParent.offsetLeft,
@@ -19,12 +19,14 @@ const Map = ({ src, alt, options }) => {
       height: imgRef.current.clientHeight,
       width: imgRef.current.clientWidth,
     };
-    const relative = { x: coord.x - offset.x, y: coord.y - offset.y };
+    const relative = {
+      x: coord.x - offset.x + window.scrollX,
+      y: coord.y - offset.y + window.scrollY,
+    };
     setPoints({
       x: Math.round((relative.x / imgSize.width) * 100),
       y: Math.round((relative.y / imgSize.height) * 100),
     });
-    console.log(points);
   }
   return (
     <Wrapper>

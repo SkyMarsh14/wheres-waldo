@@ -35,7 +35,7 @@ const ringeringAnimation = keyframes`
     }
 `;
 const Ringering = styled(Dot)`
-  animation: 2s ${ringeringAnimation} infinite;
+  animation: 1.5s ${ringeringAnimation} infinite;
 `;
 
 const Popup = ({ options, points }) => {
