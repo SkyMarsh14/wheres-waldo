@@ -1,9 +1,17 @@
 import styled from "styled-components";
 import pokemon from "./../assets/pokemon.jpeg";
+import shellder from "./../assets/shellderImg.png";
+import meowth from "../assets/meowthImg.png";
+import psyduck from "../assets/psyduckImg.png";
 import Map from "../components/Map";
 import { createContext, useContext, useState } from "react";
+const options = [
+  { name: "Shellder", src: shellder },
+  { name: "Meowth", src: meowth },
+  { name: "Psyduck", src: psyduck },
+];
 const MapContext = createContext({
-  notFound: ["Shllder", "Meowth", "Psyduck"],
+  notFound: options,
 });
 const Wrapper = styled.div``;
 const Credit = styled.div`
@@ -13,7 +21,7 @@ const Credit = styled.div`
 `;
 
 const Pokemon = () => {
-  const [notFound, setNotFound] = useState(["Shellder", "Meowth", "Psyduck"]);
+  const [notFound, setNotFound] = useState(options);
   return (
     <MapContext value={notFound}>
       <Wrapper>
@@ -29,11 +37,7 @@ const Pokemon = () => {
             </a>
           </div>
         </Credit>
-        <Map
-          src={pokemon}
-          alt="Pokemon Map"
-          options={["Pokemon 1", "Pokemon 2", "Pokemon 3"]}
-        />
+        <Map src={pokemon} alt="Pokemon Map" options={options} />
       </Wrapper>
     </MapContext>
   );

@@ -8,8 +8,18 @@ const PopupContainer = styled.div`
   transform: translateX(7%) translateY(7%);
 `;
 const Option = styled.button`
-  display: block;
+  display: flex;
+  font-size: 1.5em;
   padding: 0 1em;
+  align-items: center;
+  &:before {
+    display: inline-block;
+    content: "";
+    background-image: url(${(props) => props.src});
+    background-size: contain;
+    width: 1.5em;
+    height: 1.5em;
+  }
 `;
 const DotContainer = styled.div`
   position: absolute;
@@ -43,7 +53,9 @@ const Popup = ({ options, points }) => {
     <>
       <PopupContainer points={points}>
         {options.map((opt, index) => (
-          <Option key={index}>{opt}</Option>
+          <Option key={index} src={opt.src}>
+            {opt.name}
+          </Option>
         ))}
       </PopupContainer>
       <DotContainer points={points}>
