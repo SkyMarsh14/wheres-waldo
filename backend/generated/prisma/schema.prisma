@@ -1,0 +1,24 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+model Target {
+  id          Int    @id @default(autoincrement())
+  name        String @unique
+  coordinateX Int
+  coordinateY Int
+  mapId       Int
+  map         Map    @relation(fields: [mapId], references: [id])
+}
+
+model Map {
+  id      Int      @id @default(autoincrement())
+  name    String
+  targets Target[]
+}
