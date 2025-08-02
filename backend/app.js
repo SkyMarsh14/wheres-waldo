@@ -1,7 +1,11 @@
 import express from "express";
-const app = express();
+import "dotenv/config";
+import cors from cors;
 
-app.get("/", (req, res) => res.send("Hello, World"));
+const app = express();
+app.use(cors());
+app.use(express.urlencoded({extended:true}))
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
