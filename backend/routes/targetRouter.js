@@ -1,4 +1,4 @@
-import targetController from "../controllers/targetController";
+import targetController from "../controllers/targetController.js";
 import { Router } from "express";
 const targetRouter = Router();
 
