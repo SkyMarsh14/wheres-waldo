@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
 import Popup from "./Popup";
 import styled from "styled-components";
+import MapContext from "../../util/MapContext.js";
 const Wrapper = styled.div`
   position: relative;
 `;
-const Map = ({ src, alt, options }) => {
+const Map = ({ src, alt, targets, mapId }) => {
   const [popup, setPopup] = useState(null);
   const [points, setPoints] = useState({ x: 0, y: 0 });
   const imgRef = useRef(null);
@@ -29,10 +30,12 @@ const Map = ({ src, alt, options }) => {
     });
   }
   return (
-    <Wrapper>
-      <img src={src} alt={alt} onClick={handleClick} ref={imgRef} />
-      {popup && <Popup options={options} points={points} />}
-    </Wrapper>
+    <MapContext.Provider value={{ targets, mapId }}>
+      <Wrapper>
+        <img src={src} alt={alt} onClick={handleClick} ref={imgRef} />
+        {popup && <Popup targets={targets} points={points} mapId={mapId} />}
+      </Wrapper>
+    </MapContext.Provider>
   );
 };
 
