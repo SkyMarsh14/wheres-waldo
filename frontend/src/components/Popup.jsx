@@ -74,7 +74,7 @@ const Ringering = styled(Dot)`
 `;
 
 const Popup = ({ points }) => {
-  const { targets, mapId } = useContext(MapContext);
+  const { targets, mapId, setTargets, setPopup } = useContext(MapContext);
   async function handleClick(e, name, points) {
     e.preventDefault();
     const payload = {
@@ -94,24 +94,31 @@ const Popup = ({ points }) => {
       import.meta.env.VITE_BACKEND_URL + "target",
       options
     ).then((response) => response.json());
-
+    setPopup((prev) => !prev);
     if (!response.correct) {
-      alert(response.message);
+      return alert(response.message);
     }
-    console.log(response);
+    setTargets((prev) =>
+      prev.map((item) => ({
+        ...item,
+        found: item.name === name ? true : item.found,
+      }))
+    );
   }
   return (
     <>
       <PopupContainer points={points}>
-        {targets.map((target, index) => (
-          <Option
-            key={index}
-            src={target.src}
-            onClick={(e) => handleClick(e, target.name, points)}
-          >
-            {target.name}
-          </Option>
-        ))}
+        {targets
+          .filter((target) => !target.found)
+          .map((target, index) => (
+            <Option
+              key={index}
+              src={target.src}
+              onClick={(e) => handleClick(e, target.name, points)}
+            >
+              {target.name}
+            </Option>
+          ))}
       </PopupContainer>
       <DotContainer points={points}>
         <Ringering />

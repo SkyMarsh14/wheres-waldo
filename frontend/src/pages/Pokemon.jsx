@@ -5,9 +5,9 @@ import meowth from "../assets/meowthImg.png";
 import psyduck from "../assets/psyduckImg.png";
 import Map from "../components/Map";
 const targets = [
-  { name: "Shellder", src: shellder },
-  { name: "Meowth", src: meowth },
-  { name: "Psyduck", src: psyduck },
+  { name: "Shellder", src: shellder, found: false },
+  { name: "Meowth", src: meowth, found: false },
+  { name: "Psyduck", src: psyduck, found: false },
 ];
 
 const Wrapper = styled.div``;
@@ -32,7 +32,7 @@ const Pokemon = () => {
           </a>
         </div>
       </Credit>
-      <Map src={pokemon} alt="Pokemon Map" targets={targets} mapId="1" />
+      <Map src={pokemon} alt="Pokemon Map" target={targets} mapId="1" />
     </Wrapper>
   );
 };
