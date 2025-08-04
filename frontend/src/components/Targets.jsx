@@ -2,17 +2,19 @@ import styled from "styled-components";
 import { useContext } from "react";
 import MapContext from "../../util/MapContext";
 const Wrapper = styled.div`
-  position: sticky;
   margin: 1em;
+  position: sticky;
+  top: 1em;
+  z-index: 1;
 `;
 const FlexContainer = styled.div`
   width: fit-content;
   display: flex;
-  padding: 1em 2em;
+  padding: 0em 1em;
   gap: 2em;
-  font-size: 1.5em;
+  font-size: 1.2em;
   margin: auto;
-  background-color: #cbcbcb;
+  background-color: #f4f4f4;
   border-radius: 10px;
 `;
 const ImgContainer = styled.div`
@@ -40,21 +42,23 @@ const Title = styled.div`
 const Targets = () => {
   const { targets } = useContext(MapContext);
   return (
-    <Wrapper>
+    <>
       <Title>Find the following characters in the Map!</Title>
-      <FlexContainer>
-        {targets.map((target) => (
-          <ImgContainer>
-            {target.found ? (
-              <FoundImg src={target.src}></FoundImg>
-            ) : (
-              <Img src={target.src} alt={target.name} />
-            )}
-            <TargetName>{target.name}</TargetName>
-          </ImgContainer>
-        ))}
-      </FlexContainer>
-    </Wrapper>
+      <Wrapper>
+        <FlexContainer>
+          {targets.map((target) => (
+            <ImgContainer>
+              {target.found ? (
+                <FoundImg src={target.src}></FoundImg>
+              ) : (
+                <Img src={target.src} alt={target.name} />
+              )}
+              <TargetName>{target.name}</TargetName>
+            </ImgContainer>
+          ))}
+        </FlexContainer>
+      </Wrapper>
+    </>
   );
 };
 export default Targets;
