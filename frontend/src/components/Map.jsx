@@ -3,13 +3,14 @@ import Popup from "./Popup";
 import styled from "styled-components";
 import MapContext from "../../util/MapContext.js";
 import Targets from "./Targets.jsx";
+import Credit from "./Credit.jsx";
 const Wrapper = styled.div`
   position: relative;
 `;
 const StyledImg = styled.img`
   padding: 0.5em;
 `;
-const Map = ({ src, alt, target, mapId }) => {
+const Map = ({ src, alt, target, mapId, credit }) => {
   const [timer, setTimer] = useState(null);
 
   useEffect(() => {
@@ -42,12 +43,13 @@ const Map = ({ src, alt, target, mapId }) => {
   }
   return (
     <MapContext.Provider
-      value={{ targets, mapId, setTargets, setPopup, timer }}
+      value={{ targets, mapId, setTargets, setPopup, timer, credit }}
     >
       <Targets></Targets>
       <Wrapper>
         <StyledImg src={src} alt={alt} onClick={handleClick} ref={imgRef} />
         {popup && <Popup points={points} />}
+        <Credit></Credit>
       </Wrapper>
     </MapContext.Provider>
   );

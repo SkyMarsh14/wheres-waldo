@@ -1,6 +1,6 @@
 const formatTime = (seconds) => {
   const formattedTime =
-    Math.round(seconds / 60).toLocaleString("en-US", {
+    Math.floor(seconds / 60).toLocaleString("en-US", {
       minimumIntegerDigits: 2,
       useGrouping: false,
     }) +
