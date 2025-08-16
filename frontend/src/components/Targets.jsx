@@ -17,6 +17,7 @@ const StickyContainer = styled.div`
   font-size: 1.2em;
   margin: auto;
   background-color: #f6f6f6;
+  font-family: "Chewy";
 `;
 const Target = styled.div`
   font-size: 0.7em;
@@ -36,21 +37,20 @@ const TargetName = styled.div`
   font-size: 0.8em;
 `;
 const Title = styled.div`
-  font-family: "Chewy";
   font-size: 1.2em;
   text-align: center;
   margin: 0.5em;
+  font-family: "Bagel Fat One";
 `;
 
 const TargetContainer = styled.div`
   display: flex;
   gap: 1em;
-  font-family: "Chewy";
 `;
 const StopWatch = styled.div`
   display: flex;
   font-size: 1.5em;
-  font-family: "digital-clock-font", sans-serif;
+  font-family: "Orbitron", sans-serif;
   align-items: center;
   gap: 0.3em;
 `;
