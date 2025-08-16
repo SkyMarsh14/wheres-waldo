@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import Popup from "./Popup";
 import styled from "styled-components";
 import MapContext from "../../util/MapContext.js";
@@ -17,6 +17,7 @@ const Map = ({ src, alt, target, mapId, credit }) => {
     const intervalId = setInterval(() => {
       setTimer((prev) => prev + 1);
     }, 1000);
+    return () => clearInterval(intervalId);
   }, []);
   const [popup, setPopup] = useState(null);
   const [points, setPoints] = useState({ x: 0, y: 0 });
@@ -41,10 +42,19 @@ const Map = ({ src, alt, target, mapId, credit }) => {
       y: (relative.y / imgSize.height) * 100,
     });
   }
+  const contextValue = useMemo(
+    () => ({
+      targets,
+      mapId,
+      setTargets,
+      setPopup,
+      timer,
+      credit,
+    }),
+    [targets, mapId, timer, credit]
+  );
   return (
-    <MapContext.Provider
-      value={{ targets, mapId, setTargets, setPopup, timer, credit }}
-    >
+    <MapContext.Provider value={contextValue}>
       <Targets></Targets>
       <Wrapper>
         <StyledImg src={src} alt={alt} onClick={handleClick} ref={imgRef} />

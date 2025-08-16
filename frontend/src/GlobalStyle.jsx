@@ -40,5 +40,22 @@ p, h1, h2, h3, h4, h5, h6 {
 #root, #__next {
   isolation: isolate;
 }
+@font-face {
+  font-family: "digital-clock-font";
+  src: url('../public/digital-7/digital-7.ttf');
+}
+@font-face {
+  font-family: "Chewy";
+  src: url("../public/Chewy/Chewy-Regular.ttf");
+}
+@font-face {
+  font-family: "Modak";
+  src: url('../public/Modak/Modak-Regular.ttf');
+}
+@font-face {
+  font-family: "Bagel-Fat-One";
+  src: url('../public/Bagel_Fat_One/BagelFatOne-Regular.ttf');
+}
 `;
+
 export default GlobalStyle;

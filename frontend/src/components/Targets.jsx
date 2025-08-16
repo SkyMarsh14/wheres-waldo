@@ -10,6 +10,7 @@ const StickyContainer = styled.div`
   z-index: 1;
   box-shadow: 1.6px 3.2px 3.2px hsl(0deg 0% 0% / 0.45);
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   padding: 0em 1em;
   gap: 2em;
@@ -35,6 +36,7 @@ const TargetName = styled.div`
   font-size: 0.8em;
 `;
 const Title = styled.div`
+  font-family: "Chewy";
   font-size: 1.2em;
   text-align: center;
   margin: 0.5em;
@@ -43,9 +45,12 @@ const Title = styled.div`
 const TargetContainer = styled.div`
   display: flex;
   gap: 1em;
+  font-family: "Chewy";
 `;
 const StopWatch = styled.div`
   display: flex;
+  font-size: 1.5em;
+  font-family: "digital-clock-font", sans-serif;
   align-items: center;
   gap: 0.3em;
 `;
@@ -73,7 +78,7 @@ const Targets = () => {
       <StickyContainer>
         <TargetContainer>
           {targets.map((target) => (
-            <Target key={crypto.randomUUID()}>
+            <Target key={target.name}>
               {target.found ? (
                 <FoundImg src={target.src}></FoundImg>
               ) : (
@@ -87,7 +92,7 @@ const Targets = () => {
           <Timer />
           {formatTime(timer)}
         </StopWatch>
-        <IndexLink>Return to Home</IndexLink>
+        <IndexLink to="/">Return to Home</IndexLink>
       </StickyContainer>
     </>
   );
