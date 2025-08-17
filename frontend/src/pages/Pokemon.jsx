@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import pokemon from "./../assets/pokemon.jpeg";
+import pokemon from "./../assets/maps/pokemon.jpeg";
 import shellder from "./../assets/shellderImg.png";
 import meowth from "../assets/meowthImg.png";
 import psyduck from "../assets/psyduckImg.png";
