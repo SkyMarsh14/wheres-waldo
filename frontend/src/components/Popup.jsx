@@ -72,9 +72,12 @@ const ringeringAnimation = keyframes`
 const Ringering = styled(Dot)`
   animation: 1.5s ${ringeringAnimation} infinite;
 `;
-
+const checkGameComplete = (targets) => {
+  return targets.every((target) => target.found);
+};
 const Popup = ({ points }) => {
-  const { targets, mapId, setTargets, setPopup } = useContext(MapContext);
+  const { targets, mapId, setTargets, setPopup, setClear } =
+    useContext(MapContext);
   async function handleClick(e, name, points) {
     e.preventDefault();
     const payload = {
@@ -83,9 +86,11 @@ const Popup = ({ points }) => {
       name,
       mapId,
     };
+    const sessionId = localStorage.getItem("sessionId");
     const options = {
       headers: {
         "Content-Type": "application/json",
+        Authorization: sessionId,
       },
       method: "POST",
       body: JSON.stringify(payload),
@@ -98,12 +103,22 @@ const Popup = ({ points }) => {
     if (!response.correct) {
       return alert(response.message);
     }
-    setTargets((prev) =>
-      prev.map((item) => ({
-        ...item,
-        found: item.name === name ? true : item.found,
-      }))
-    );
+    const updatedTargets = targets.map((item) => ({
+      ...item,
+      found: item.name === name ? true : item.found,
+    }));
+    setTargets(updatedTargets);
+    if (checkGameComplete(updatedTargets)) {
+      const response = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "game/endSession",
+        {
+          headers: {
+            Authorization: sessionId,
+          },
+        }
+      ).then((res) => res.json());
+    }
+    setClear({ clear: true, time: response.time });
   }
   return (
     <>

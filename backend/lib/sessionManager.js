@@ -8,13 +8,23 @@ class SessionManager {
     return sessionId;
   }
   findSession(sessionId) {
-    return sessionStorage.findIndex((item) => item.sessionId == sessionId);
+    const index = sessionStorage.findIndex(
+      (item) => item.sessionId === sessionId
+    );
+    if (index === -1) {
+      console.error(`No session found: ${sessionId}`);
+    }
+    return index;
   }
   setStartTime(sessionId) {
     sessionStorage[this.findSession(sessionId)].startTime = new Date();
   }
   setEndTime(sessionId) {
-    sessionStorage[findSEssion(sessionId)].endTime = new Date();
+    sessionStorage[this.findSession(sessionId)].endTime = new Date();
+  }
+  getResult(sessionId) {
+    const index = this.findSession(sessionId);
+    return sessionStorage[index].endTime - sessionStorage[index].startTime;
   }
 }
 

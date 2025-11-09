@@ -24,6 +24,7 @@ const Map = ({ src, alt, target, mapId, credit }) => {
   const [popup, setPopup] = useState(null);
   const [points, setPoints] = useState({ x: 0, y: 0 });
   const [targets, setTargets] = useState(target);
+  const [clear, setClear] = useState({ clear: false, time: null });
   const imgRef = useRef(null);
   function handleClick(e) {
     setPopup((prev) => (prev ? false : true));
@@ -52,8 +53,10 @@ const Map = ({ src, alt, target, mapId, credit }) => {
       setPopup,
       timer,
       credit,
+      clear,
+      setClear,
     }),
-    [targets, mapId, timer, credit]
+    [targets, mapId, timer, credit, clear]
   );
   return (
     <MapContext.Provider value={contextValue}>

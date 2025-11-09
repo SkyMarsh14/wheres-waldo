@@ -18,7 +18,15 @@ model Target {
 }
 
 model Map {
-  id      Int      @id @default(autoincrement())
-  name    String
-  targets Target[]
+  id           Int           @id @default(autoincrement())
+  name         String
+  targets      Target[]
+  leaderboards Leaderboard[]
+}
+
+model Leaderboard {
+  id          Int @id @default(autoincrement())
+  timeSeconds Int
+  mapId       Int
+  map         Map @relation(fields: [mapId], references: [id])
 }

@@ -7,7 +7,7 @@ const targetController = {
     const coordinateY = Number(req.body.coordinateY);
     const coords = await prisma.target.findFirst({
       where: {
-        mapId: Number(mapId),
+        mapId: mapId,
         name,
       },
     });
