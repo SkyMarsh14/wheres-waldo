@@ -76,7 +76,7 @@ const checkGameComplete = (targets) => {
   return targets.every((target) => target.found);
 };
 const Popup = ({ points }) => {
-  const { targets, mapId, setTargets, setPopup, setClear } =
+  const { targets, mapId, setTargets, setPopup, setClear, intervalRef } =
     useContext(MapContext);
   async function handleClick(e, name, points) {
     e.preventDefault();
@@ -110,15 +110,18 @@ const Popup = ({ points }) => {
     setTargets(updatedTargets);
     if (checkGameComplete(updatedTargets)) {
       const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "game/endSession",
+        import.meta.env.VITE_BACKEND_URL +
+          "game/endSession" +
+          `?mapId=${mapId}`,
         {
           headers: {
             Authorization: sessionId,
           },
         }
       ).then((res) => res.json());
+      setClear({ clear: true, time: response.time });
+      clearInterval(intervalRef.current);
     }
-    setClear({ clear: true, time: response.time });
   }
   return (
     <>

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import MapContext from "../../util/MapContext.js";
 import Targets from "./Targets.jsx";
 import Credit from "./Credit.jsx";
+import ClearPopup from "./ClearPopup.jsx";
 const Wrapper = styled.div`
   position: relative;
 `;
@@ -13,19 +14,20 @@ const StyledImg = styled.img`
 `;
 const Map = ({ src, alt, target, mapId, credit }) => {
   const [timer, setTimer] = useState(null);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000);
-    startSession();
-    return () => clearInterval(intervalId);
-  }, []);
   const [popup, setPopup] = useState(null);
   const [points, setPoints] = useState({ x: 0, y: 0 });
   const [targets, setTargets] = useState(target);
   const [clear, setClear] = useState({ clear: false, time: null });
   const imgRef = useRef(null);
+  const intervalRef = useRef();
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setTimer((prev) => prev + 1);
+    }, 1000);
+    startSession();
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
   function handleClick(e) {
     setPopup((prev) => (prev ? false : true));
     const offset = {
@@ -55,8 +57,9 @@ const Map = ({ src, alt, target, mapId, credit }) => {
       credit,
       clear,
       setClear,
+      intervalRef,
     }),
-    [targets, mapId, timer, credit, clear]
+    [targets, mapId, timer, credit, clear, intervalRef]
   );
   return (
     <MapContext.Provider value={contextValue}>
@@ -66,6 +69,7 @@ const Map = ({ src, alt, target, mapId, credit }) => {
         {popup && <Popup points={points} />}
         <Credit></Credit>
       </Wrapper>
+      {clear.clear && <ClearPopup />}
     </MapContext.Provider>
   );
 };
