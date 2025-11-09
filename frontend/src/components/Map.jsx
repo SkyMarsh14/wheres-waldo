@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
+import startSession from "../../util/startSession.js";
 import Popup from "./Popup";
 import styled from "styled-components";
 import MapContext from "../../util/MapContext.js";
@@ -17,6 +18,7 @@ const Map = ({ src, alt, target, mapId, credit }) => {
     const intervalId = setInterval(() => {
       setTimer((prev) => prev + 1);
     }, 1000);
+    startSession();
     return () => clearInterval(intervalId);
   }, []);
   const [popup, setPopup] = useState(null);
