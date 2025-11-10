@@ -1,19 +1,61 @@
-import { useContext } from "react";
+import { useContext, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useWindowSize } from "react-use";
+import Confetti from "react-confetti";
 import MapContext from "../../util/MapContext";
 import styled from "styled-components";
 const Wrapper = styled.dialog`
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 50;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border: none;
+  border-radius: 5px;
+  padding: 4.5em 2em;
+  display: flex;
+  gap: 1.4em;
+  flex-direction: column;
+`;
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+`;
+const StyledButton = styled.button`
+  padding: 0.3em 3em;
+  border-radius: 5px;
+  flex-basis: 0;
+  flex-grow: 1;
+  transition: filter 0.2s ease-in-out;
+  color: ${(props) => (props.$primary ? "white" : "#65656c")};
+  background-color: ${(props) => (props.$primary ? "#3C70FF" : "white")};
+  border: 1px ${(props) => (props.$primary ? "#3C70FF" : "#a7a7af")} solid;
+  &:hover {
+    filter: brightness(80%);
+  }
+`;
+const P = styled.p`
+  font-weight: 800;
+  font-size: 1.2em;
+`;
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
 `;
 const ClearPopup = () => {
   const { mapId, clear } = useContext(MapContext);
   const url = import.meta.env.VITE_BACKEND_URL + "leaderboard";
   const sessionId = localStorage.getItem("sessionId");
   const navigate = useNavigate();
+  const modalRef = useRef(null);
+  const { width, height } = useWindowSize();
+  useEffect(() => {
+    modalRef.current.showModal();
+    document.body.style.overflow = "hidden";
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -39,18 +81,24 @@ const ClearPopup = () => {
   };
   return (
     <>
-      <Wrapper open>
-        <p>Congratulations! You have cleared the map</p>
-        <form action={url} method="post" onSubmit={handleSubmit}>
+      <Wrapper ref={modalRef}>
+        <P>Congratulations! You have cleared the map!</P>
+        <StyledForm action={url} method="post" onSubmit={handleSubmit}>
           <label htmlFor="username">
             Enter your name to be displayed in the leaderboard:
           </label>
-          <input type="text" name="username" />
-          <button type="submit">Submit</button>
-          <button onClick={handleExit}>Exit</button>
-        </form>
+          <input type="text" id="username" name="username" required />
+          <ButtonContainer>
+            <StyledButton $primary type="submit">
+              Submit
+            </StyledButton>
+            <StyledButton onClick={handleExit}>Exit</StyledButton>
+          </ButtonContainer>
+        </StyledForm>
       </Wrapper>
+      <Confetti width={width} height={height} numberOfPieces={300} />
     </>
   );
 };
+
 export default ClearPopup;
