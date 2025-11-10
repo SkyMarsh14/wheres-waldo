@@ -6,10 +6,27 @@ const leaderboardController = {
     const formattedTime = Math.round(time / 1000);
     const mapId = Number(req.body.mapId);
     const username = req.body.username;
+    const exisitingRecord = await prisma.leaderboard.findUnique({
+      where: {
+        mapId_username: {
+          username,
+          mapId,
+        },
+      },
+    });
+    if (exisitingRecord) {
+      if (formattedTime > exisitingRecord.timeSeconds) {
+        res.json({
+          msg: "Better record with the same username already exist.",
+        });
+      }
+    }
     const record = await prisma.leaderboard.upsert({
       where: {
-        mapId,
-        username,
+        mapId_username: {
+          mapId,
+          username,
+        },
       },
       update: {
         timeSeconds: formattedTime,
@@ -20,6 +37,7 @@ const leaderboardController = {
         timeSeconds: formattedTime,
       },
     });
+    res.json(record);
   },
   get: async (req, res) => {
     const mapId = Number(req.params.mapId);
@@ -27,7 +45,7 @@ const leaderboardController = {
       where: {
         mapId,
       },
-      orderBy: { timeSeconds: "desc" },
+      orderBy: { timeSeconds: "asc" },
     });
     res.json(data);
   },
