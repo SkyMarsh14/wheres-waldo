@@ -9,7 +9,6 @@ const Wrapper = styled.dialog`
   transform: translate(-50%, -50%);
   z-index: 50;
 `;
-const Link = styled.link``;
 const ClearPopup = () => {
   const { mapId, clear } = useContext(MapContext);
   const url = import.meta.env.VITE_BACKEND_URL + "leaderboard";
