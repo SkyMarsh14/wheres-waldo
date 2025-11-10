@@ -15,7 +15,7 @@ const ClearPopup = () => {
       <Wrapper open>
         <p>Congratulations! You have cleared the map</p>
         <form action="">
-          <button>Submit</button>
+          <button type="submit">Submit</button>
         </form>
       </Wrapper>
     </>

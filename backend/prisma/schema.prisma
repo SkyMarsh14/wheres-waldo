@@ -25,8 +25,11 @@ model Map {
 }
 
 model Leaderboard {
-  id          Int @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   timeSeconds Int
+  username    String
   mapId       Int
-  map         Map @relation(fields: [mapId], references: [id])
+  map         Map    @relation(fields: [mapId], references: [id])
+
+  @@unique([mapId, username])
 }
