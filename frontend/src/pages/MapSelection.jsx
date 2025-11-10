@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import pokemonMap from "../assets/maps/pokemon.jpeg";
+import { useNavigate } from "react-router-dom";
+const maps = [{ img: pokemonMap, name: "Pokè Vacay", id: 1 }];
 const MapsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -9,9 +11,18 @@ const MapsWrapper = styled.div`
 `;
 const Card = styled.div`
   display: grid;
-  grid-template-rows: 1fr 1.5em;
+  grid-template-rows: 1fr 2.3em;
   max-width: 350px;
-  border: 2px solid black;
+  border: 1px solid black;
+  border-radius: 10px;
+  transition-property: color, border-color, transform;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+  &:hover {
+    transform: translateY(-3%);
+    border-color: #ff637f;
+    color: #ff637f;
+  }
 `;
 const Img = styled.img`
   object-fit: cover;
@@ -20,14 +31,22 @@ const Img = styled.img`
 const MapName = styled.div`
   text-align: center;
   align-self: center;
+  font-weight: 500;
+  font-size: 1.3em;
 `;
 const MapSelection = () => {
+  const navigate = useNavigate();
+  function handleClick(e, id) {
+    navigate(`/maps/${id}`);
+  }
   return (
     <MapsWrapper>
-      <Card>
-        <Img src={pokemonMap}></Img>
-        <MapName>Pokè Vacay</MapName>
-      </Card>
+      {maps.map((map) => (
+        <Card key={map.id} onClick={(e) => handleClick(e, map.id)}>
+          <Img src={map.img}></Img>
+          <MapName>{map.name}</MapName>
+        </Card>
+      ))}
     </MapsWrapper>
   );
 };
