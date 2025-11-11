@@ -3,7 +3,7 @@ import prisma from "../db/prisma.js";
 const leaderboardController = {
   add: async (req, res) => {
     const time = sessionManager.getResult(req.headers.authorization);
-    const formattedTime = Math.round(time / 10) / 100; // Stores seconds up to two decimal point
+    const seconds = time / 1000;
     const mapId = Number(req.body.mapId);
     const username = req.body.username;
     const exisitingRecord = await prisma.leaderboard.findUnique({
@@ -15,7 +15,7 @@ const leaderboardController = {
       },
     });
     if (exisitingRecord) {
-      if (formattedTime > exisitingRecord.timeSeconds) {
+      if (seconds > exisitingRecord.timeSeconds) {
         res.json({
           msg: "Better record with the same username already exist.",
         });
@@ -29,12 +29,12 @@ const leaderboardController = {
         },
       },
       update: {
-        timeSeconds: formattedTime,
+        timeSeconds: seconds,
       },
       create: {
         username,
         mapId,
-        timeSeconds: formattedTime,
+        timeSeconds: seconds,
       },
     });
     res.json(record);
