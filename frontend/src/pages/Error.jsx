@@ -25,6 +25,11 @@ const HomeLink = styled.button`
   width: 30%;
   background-color: white;
   border-radius: 4px;
+  cursor: pointer;
+  transition: filter 0.2s;
+  &:hover {
+    filter: brightness(80%);
+  }
 `;
 
 const Error = () => {

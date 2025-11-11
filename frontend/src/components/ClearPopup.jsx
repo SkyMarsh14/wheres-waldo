@@ -35,6 +35,10 @@ const StyledButton = styled.button`
   &:hover {
     filter: brightness(80%);
   }
+  &:focus-visible {
+    outline: ${(props) =>
+      props.$primary ? "1px solid black" : "1px solid #3C70FF"};
+  }
 `;
 const P = styled.p`
   font-weight: 800;
@@ -55,7 +59,8 @@ const ClearPopup = () => {
   useEffect(() => {
     modalRef.current.showModal();
     document.body.style.overflow = "hidden";
-  });
+    return () => (document.body.style.overflow = "visible");
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -87,7 +92,13 @@ const ClearPopup = () => {
           <label htmlFor="username">
             Enter your name to be displayed in the leaderboard:
           </label>
-          <input type="text" id="username" name="username" required />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            pattern="[A-Za-z0-9]"
+          />
           <ButtonContainer>
             <StyledButton $primary type="submit">
               Submit

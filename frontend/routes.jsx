@@ -3,6 +3,7 @@ import Pokemon from "./src/pages/Pokemon";
 import Home from "./src/pages/Home";
 import Error from "./src/pages/Error";
 import MapSelection from "./src/pages/MapSelection";
+import Leaderboard from "./src/pages/Leaderboard";
 const routes = [
   {
     path: "/",
@@ -13,6 +14,10 @@ const routes = [
       { path: "map-selection", element: <MapSelection /> },
     ],
     errorElement: <Error />,
+  },
+  {
+    path: "/leaderboard/:mapId",
+    element: <Leaderboard />,
   },
 ];
 export default routes;

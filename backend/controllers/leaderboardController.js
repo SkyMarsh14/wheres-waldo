@@ -3,7 +3,7 @@ import prisma from "../db/prisma.js";
 const leaderboardController = {
   add: async (req, res) => {
     const time = sessionManager.getResult(req.headers.authorization);
-    const formattedTime = Math.round(time / 1000);
+    const formattedTime = Math.round(time / 10) / 100; // Stores seconds up to two decimal point
     const mapId = Number(req.body.mapId);
     const username = req.body.username;
     const exisitingRecord = await prisma.leaderboard.findUnique({
