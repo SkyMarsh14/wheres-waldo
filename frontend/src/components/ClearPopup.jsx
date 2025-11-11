@@ -1,4 +1,4 @@
-import { useContext, useRef, useEffect } from "react";
+import { useContext, useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWindowSize } from "react-use";
 import Confetti from "react-confetti";
@@ -51,11 +51,23 @@ const ButtonContainer = styled.div`
 `;
 const ClearPopup = () => {
   const { mapId, clear } = useContext(MapContext);
+  const [username, setUsername] = useState("");
+  const [validationMessage, setValidationMessage] = useState("");
   const url = import.meta.env.VITE_BACKEND_URL + "leaderboard";
   const sessionId = localStorage.getItem("sessionId");
   const navigate = useNavigate();
   const modalRef = useRef(null);
   const { width, height } = useWindowSize();
+  const handleChange = (e) => {
+    const str = e.target.value.toString();
+    const trimmed = e.target.value.trim();
+    if (trimmed == "") {
+      setValidationMessage("Username cannot be just spaces.");
+    } else if (str.startsWith(" ")) {
+      setValidationMessage("Username cannot start with a space.");
+    }
+    setUsername(str);
+  };
   useEffect(() => {
     modalRef.current.showModal();
     document.body.style.overflow = "hidden";
@@ -64,7 +76,7 @@ const ClearPopup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
-      username: e.target.elements.username.value,
+      username: e.target.elements.username.value.trim(),
       mapId,
     };
     const options = {
@@ -97,7 +109,9 @@ const ClearPopup = () => {
             id="username"
             name="username"
             required
-            pattern="[A-Za-z0-9]"
+            pattern="^(?!\s)(?!\s*$).+"
+            title={validationMessage}
+            onChange={handleChange}
           />
           <ButtonContainer>
             <StyledButton $primary type="submit">
