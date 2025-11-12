@@ -1,5 +1,35 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import styled from "styled-components";
+const Table = styled.table`
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 800px;
+`;
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+const Td = styled.td`
+  border: 1px solid #ddd;
+  padding: 8px;
+`;
+const Th = styled.th`
+  border: 1px solid #ddd;
+  padding: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+`;
+const Tr = styled.tr`
+  &:hover {
+    background-color: #ddd;
+  }
+`;
 const Leaderboard = () => {
   const params = useParams();
   const url = import.meta.env.VITE_BACKEND_URL + "leaderboard/" + params.mapId;
@@ -28,22 +58,26 @@ const Leaderboard = () => {
 
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            <th>Player Name</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          {ranking.map((record) => (
-            <tr key={record.id}>
-              <td>{record.username}</td>
-              <td>{record.timeSeconds}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Wrapper>
+        <Table>
+          <thead>
+            <Tr>
+              <Th>Rank</Th>
+              <Th>Player Name</Th>
+              <Th>Time</Th>
+            </Tr>
+          </thead>
+          <tbody>
+            {ranking.map((record, index) => (
+              <Tr key={record.id}>
+                <Td>{index + 1}</Td>
+                <Td>{record.username}</Td>
+                <Td>{record.timeSeconds}</Td>
+              </Tr>
+            ))}
+          </tbody>
+        </Table>
+      </Wrapper>
     </>
   );
 };

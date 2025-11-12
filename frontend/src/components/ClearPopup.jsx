@@ -65,6 +65,8 @@ const ClearPopup = () => {
       setValidationMessage("Username cannot be just spaces.");
     } else if (str.startsWith(" ")) {
       setValidationMessage("Username cannot start with a space.");
+    } else if (str.length > 20) {
+      setValidationMessage("Username must be shorter than 20 characters.");
     }
     setUsername(str);
   };
@@ -112,6 +114,7 @@ const ClearPopup = () => {
             pattern="^(?!\s)(?!\s*$).+"
             title={validationMessage}
             onChange={handleChange}
+            maxLength={30}
           />
           <ButtonContainer>
             <StyledButton $primary type="submit">
