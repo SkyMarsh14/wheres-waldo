@@ -1,13 +1,14 @@
-import sessionManager from "./sessionManager";
+import sessionManager from "./sessionManager.js";
 const attachSession = (req, res, next) => {
-  const sessionId = req.headers.authorization;
+  let sessionId = req.headers.authorization;
   if (sessionId == undefined) {
-    sessionManager.addSession();
-    sessionManager.setStartTime();
-  } else {
-    req.session.id = sessionId;
-    req.session.map = Number(req.params.mapId);
+    sessionId = sessionManager.addSession();
+    sessionManager.setStartTime(sessionId);
   }
+  req.session = {
+    id: sessionId,
+    mapId: Number(req.params.mapId),
+  };
   next();
 };
 export default attachSession;

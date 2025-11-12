@@ -10,7 +10,7 @@ const gameController = {
         targets: true,
       },
     });
-    res.jsoon({ sessionId: req.session.id, mapData });
+    res.json({ sessionId: req.session.id, mapData });
   },
   endSession: async (req, res) => {
     sessionManager.setEndTime(req.headers.authorization);
