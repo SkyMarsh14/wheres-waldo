@@ -11,6 +11,7 @@ generator client {
 model Target {
   id          Int    @id @default(autoincrement())
   name        String @unique
+  url         String @unique
   coordinateX Int
   coordinateY Int
   mapId       Int
@@ -20,6 +21,7 @@ model Target {
 model Map {
   id           Int           @id @default(autoincrement())
   name         String
+  url          String        @unique
   targets      Target[]
   leaderboards Leaderboard[]
 }

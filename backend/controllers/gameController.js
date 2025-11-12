@@ -1,10 +1,16 @@
 import sessionManager from "../lib/sessionManager.js";
 import prisma from "../db/prisma.js";
 const gameController = {
-  startSession: async (req, res) => {
-    const sessionId = sessionManager.addSession();
-    sessionManager.setStartTime(sessionId);
-    res.json({ sessionId: sessionId });
+  start: async (req, res) => {
+    const mapData = await prisma.map.findUnique({
+      where: {
+        id: req.session.mapId,
+      },
+      include: {
+        targets: true,
+      },
+    });
+    res.jsoon({ sessionId: req.session.id, mapData });
   },
   endSession: async (req, res) => {
     sessionManager.setEndTime(req.headers.authorization);
