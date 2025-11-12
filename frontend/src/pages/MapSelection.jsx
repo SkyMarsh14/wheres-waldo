@@ -37,7 +37,7 @@ const MapName = styled.div`
 const MapSelection = () => {
   const navigate = useNavigate();
   function handleClick(e, id) {
-    navigate(`/maps/${id}`);
+    navigate(`/maps/${id}`, { viewTransition: true });
   }
   return (
     <MapsWrapper>

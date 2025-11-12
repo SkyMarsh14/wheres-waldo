@@ -3,7 +3,7 @@ import { useContext } from "react";
 import MapContext from "../../util/MapContext";
 import { Timer } from "lucide-react";
 import formatTime from "../../util/formatTime";
-import { Link } from "react-router";
+import HomeLink from "./HomeLink";
 const StickyContainer = styled.div`
   position: sticky;
   top: 0;
@@ -54,22 +54,7 @@ const StopWatch = styled.div`
   align-items: center;
   gap: 0.3em;
 `;
-const IndexLink = styled(Link)`
-  align-self: center;
-  background-color: #62beff;
-  color: #320000;
-  padding: 0.3em 0.5em;
-  border-radius: 7px;
-  text-decoration: none;
-  transition: box-shadow 0.2s ease-in-out;
-  &:visited {
-    color: #2c0000;
-    text-decoration: none;
-  }
-  &:hover {
-    box-shadow: 3.5px 7px 7px hsl(0deg 0% 0% / 0.39);
-  }
-`;
+
 const Targets = () => {
   const { targets, timer } = useContext(MapContext);
   return (
@@ -92,7 +77,7 @@ const Targets = () => {
           <Timer />
           {formatTime(timer)}
         </StopWatch>
-        <IndexLink to="/">Return to Home</IndexLink>
+        <HomeLink to="/">Return to Home</HomeLink>
       </StickyContainer>
     </>
   );

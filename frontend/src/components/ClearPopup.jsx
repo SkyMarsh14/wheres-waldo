@@ -96,7 +96,7 @@ const ClearPopup = () => {
   };
   const handleExit = (e) => {
     e.preventDefault();
-    navigate("/");
+    navigate("/", { viewTransition: true });
   };
   return (
     <>

@@ -41,13 +41,21 @@ const leaderboardController = {
   },
   get: async (req, res) => {
     const mapId = Number(req.params.mapId);
-    const data = await prisma.leaderboard.findMany({
+    const record = await prisma.leaderboard.findMany({
       where: {
         mapId,
       },
       orderBy: { timeSeconds: "asc" },
     });
-    res.json(data);
+    const map = await prisma.map.findUnique({
+      where: {
+        id: mapId,
+      },
+      select: {
+        name: true,
+      },
+    });
+    res.json({ record, mapName: map.name });
   },
 };
 export default leaderboardController;

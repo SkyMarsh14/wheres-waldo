@@ -1,17 +1,35 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import medal from "../assets/medal.png";
 import styled from "styled-components";
+import HomeLink from "../components/HomeLink";
 const Table = styled.table`
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
-  max-width: 800px;
+  margin: 2em 0;
 `;
 const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  max-width: 800px;
+  margin: auto;
 `;
+const MedalIcon = styled.span`
+  display: inline-block;
+  background-image: url(${medal});
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 1em;
+  height: 1em;
+  position: relative;
+  top: 0.1em;
+`;
+const Caption = styled.caption`
+  font-size: 2em;
+  font-weight: 800;
+  margin: 1em;
+`;
+
 const Td = styled.td`
   border: 1px solid #ddd;
   padding: 8px;
@@ -33,7 +51,7 @@ const Tr = styled.tr`
 const Leaderboard = () => {
   const params = useParams();
   const url = import.meta.env.VITE_BACKEND_URL + "leaderboard/" + params.mapId;
-  const [ranking, setRanking] = useState(null);
+  const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -41,7 +59,7 @@ const Leaderboard = () => {
       const response = await fetch(url).then((res) => res.json());
       return response;
     }
-    setRanking(getData());
+    setData(getData());
     fetch(url, { mode: "cors" })
       .then((response) => {
         if (response.status >= 400) {
@@ -49,7 +67,7 @@ const Leaderboard = () => {
         }
         return response.json();
       })
-      .then((response) => setRanking(response))
+      .then((response) => setData(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, []);
@@ -60,6 +78,11 @@ const Leaderboard = () => {
     <>
       <Wrapper>
         <Table>
+          <Caption>
+            <MedalIcon />
+            Ranking: {data.mapName}
+            <MedalIcon />
+          </Caption>
           <thead>
             <Tr>
               <Th>Rank</Th>
@@ -68,7 +91,7 @@ const Leaderboard = () => {
             </Tr>
           </thead>
           <tbody>
-            {ranking.map((record, index) => (
+            {data.record.map((record, index) => (
               <Tr key={record.id}>
                 <Td>{index + 1}</Td>
                 <Td>{record.username}</Td>
@@ -77,6 +100,7 @@ const Leaderboard = () => {
             ))}
           </tbody>
         </Table>
+        <HomeLink to="/">Return to Home</HomeLink>
       </Wrapper>
     </>
   );
