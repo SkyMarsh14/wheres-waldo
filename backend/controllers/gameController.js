@@ -12,13 +12,32 @@ const gameController = {
     });
     res.json({ sessionId: req.session.id, mapData });
   },
-  endSession: async (req, res) => {
-    sessionManager.setEndTime(req.headers.authorization);
-    const result = sessionManager.getResult(req.headers.authorization);
-    res.json({
-      time: result,
-      msg: "Congratulation",
+  guess: async (req, res) => {
+    const { targetId, coordinateX, coordinateY } = req.body;
+    const target = await prisma.target.findUnique({
+      where: {
+        id: targetId,
+      },
     });
+    if (
+      coordinateX > target.coordinateX - 5 &&
+      coordinateX < target.coordinateX + 5
+    ) {
+      if (
+        coordinateY > target.coordinateY - 5 &&
+        coordinateY < target.coordinateY + 5
+      ) {
+        sessionManager.addFoundTarget(
+          req.session.id,
+          req.session.mapId,
+          target.id
+        );
+        return res.json({
+          message: `You have found ${target.name}!`,
+          correct: true,
+        });
+      }
+    }
   },
 };
 

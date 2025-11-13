@@ -10,12 +10,14 @@ generator client {
 
 model Target {
   id          Int    @id @default(autoincrement())
-  name        String @unique
+  name        String
   url         String @unique
   coordinateX Int
   coordinateY Int
   mapId       Int
   map         Map    @relation(fields: [mapId], references: [id])
+
+  @@unique([mapId, name])
 }
 
 model Map {

@@ -1,30 +1,49 @@
-import sessionStorage from "./sessionStorage.js";
+import prisma from "../db/prisma.js";
 class SessionManager {
-  addSession() {
-    const sessionId = crypto.randomUUID();
-    sessionStorage.push({
-      sessionId,
+  constructor() {
+    this.sessions = new Map();
+  }
+  createSession(sessionId = crypto.randomUUID()) {
+    this.sessions.set(sessionId, {
+      startTime: null,
+      endTime: null,
+      resultTime: null,
+      found: new Set(),
+      cleared: false,
     });
     return sessionId;
   }
-  findSession(sessionId) {
-    const index = sessionStorage.findIndex(
-      (item) => item.sessionId === sessionId
-    );
-    if (index === -1) {
-      console.error(`No session found: ${sessionId}`);
-    }
-    return index;
+  get(sessionId) {
+    return this.sessions.get(sessionId) ?? null;
   }
   setStartTime(sessionId) {
-    sessionStorage[this.findSession(sessionId)].startTime = new Date();
+    const session = this.get(sessionId);
+    if (!session) return false;
+    session.startTime = session.startTime ?? Date.now();
   }
   setEndTime(sessionId) {
-    sessionStorage[this.findSession(sessionId)].endTime = new Date();
+    const session = this.get(sessionId);
+    if (!session) return false;
+    session.endTime = session.endTime ?? Date.now();
+    session.resultTime = session.endTime - session.startTime;
   }
-  getResult(sessionId) {
-    const index = this.findSession(sessionId);
-    return sessionStorage[index].endTime - sessionStorage[index].startTime;
+  async addFoundTarget(sessionId, mapId, targetId) {
+    const session = this.get(sessionId);
+    const targets = await prisma.target.findMany({
+      where: {
+        mapId: mapId,
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (session.found.has(targetId)) {
+      throw new Error("The selected target has already been found.");
+    }
+    session.found.add(targetId);
+    if (targets.length == session.found.size) {
+      session.cleared = true;
+    }
   }
 }
 
