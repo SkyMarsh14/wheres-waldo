@@ -4,6 +4,7 @@ import MapContext from "../util/MapContext.js";
 import { useParams } from "react-router-dom";
 import Targets from "../components/Targets.jsx";
 import Popup from "../components/Popup.jsx";
+import saveSession from "../util/saveSessionId.js";
 const Wrapper = styled.div`
   position: relative;
 `;
@@ -34,6 +35,7 @@ const Map = () => {
         const json = await res.json();
         setTarget(json.targetData);
         setMap(json.mapData);
+        saveSession(json.session.id);
         intervalRef.current = setInterval(() => {
           setTimer((prev) => prev + 1);
         }, 1000);
@@ -68,6 +70,8 @@ const Map = () => {
   const contextValue = {
     target,
     timer,
+    setPopup,
+    setTarget,
   };
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Internal Error: {error}</p>;

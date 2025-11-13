@@ -72,18 +72,15 @@ const ringeringAnimation = keyframes`
 const Ringering = styled(Dot)`
   animation: 1.5s ${ringeringAnimation} infinite;
 `;
-const checkGameComplete = (target) => {
-  return target.every((target) => target.found);
-};
 const Popup = ({ points }) => {
-  const { target, mapId, setTargets, setPopup, setClear, intervalRef } =
+  const { target, mapId, setTarget, setPopup, setClear, intervalRef } =
     useContext(MapContext);
   async function handleClick(e, id, points) {
     e.preventDefault();
     const payload = {
       coordinateX: points.x,
       coordinateY: points.y,
-      id,
+      targetId: id,
       mapId,
     };
     const sessionId = localStorage.getItem("sessionId");
@@ -96,30 +93,17 @@ const Popup = ({ points }) => {
       body: JSON.stringify(payload),
     };
     const response = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "target",
+      import.meta.env.VITE_BACKEND_URL + "game/guess",
       options
     ).then((response) => response.json());
-    setPopup((prev) => !prev);
+    setPopup((prev) => !prev); // Toggle popup menu when the guess is submitted.
     if (!response.correct) {
       return alert(response.message);
     }
-    const updatedTargets = target.map((item) => ({
-      ...item,
-      found: item.name === name ? true : item.found,
-    }));
-    setTargets(updatedTargets);
-    if (checkGameComplete(updatedTargets)) {
-      const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL +
-          "game/endSession" +
-          `?mapId=${mapId}`,
-        {
-          headers: {
-            Authorization: sessionId,
-          },
-        }
-      ).then((res) => res.json());
-      setClear({ clear: true, time: response.time });
+
+    setTarget(response.session.targets);
+    if (response.clear) {
+      setClear(true);
       clearInterval(intervalRef.current);
     }
   }
