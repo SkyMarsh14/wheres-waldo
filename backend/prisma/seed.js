@@ -79,6 +79,51 @@ async function main() {
       },
     ],
   });
+  const theGoblingGluttons = await prisma.map.create({
+    data: {
+      name: "The Gobling Gluttons",
+      url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763071888/theGoblingGluttons_zewjhh.jpg",
+    },
+  });
+  const theGoblingGluttonsTargets = await prisma.target.createMany({
+    data: [
+      {
+        name: "Waldo",
+        coordinateX: 57,
+        coordinateY: 38,
+        mapId: theGoblingGluttons.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037416/waldo_qyyrgo.jpg",
+      },
+      {
+        name: "Odlaw",
+        coordinateX: 41,
+        coordinateY: 61,
+        mapId: theGoblingGluttons.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037415/odlaw_wravdx.jpg",
+      },
+      {
+        name: "Woof",
+        coordinateX: 68,
+        coordinateY: 61,
+        mapId: theGoblingGluttons.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037414/woof_zvcw9w.jpg",
+      },
+      {
+        name: "Wizard Whitebeard",
+        coordinateX: 85,
+        coordinateY: 85,
+        mapId: theGoblingGluttons.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037415/wizardWhiteBeard_aif6wo.jpg",
+      },
+      {
+        name: "Wenda",
+        coordinateX: 39,
+        coordinateY: 34,
+        mapId: theGoblingGluttons.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037415/wenda_zgbcuc.jpg",
+      },
+    ],
+  });
   const leaderboard = await prisma.leaderboard.createMany({
     data: [
       { username: "ShadowFox", mapId: pokemonMap.id, timeSeconds: 95.32 },

@@ -11,7 +11,7 @@ generator client {
 model Target {
   id          Int    @id @default(autoincrement())
   name        String
-  url         String @unique
+  url         String
   coordinateX Int
   coordinateY Int
   mapId       Int
