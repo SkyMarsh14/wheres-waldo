@@ -1,5 +1,5 @@
 import { useContext, useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useWindowSize } from "react-use";
 import Confetti from "react-confetti";
 import MapContext from "../util/MapContext";
@@ -50,7 +50,7 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `;
 const ClearPopup = () => {
-  const { mapId, clear } = useContext(MapContext);
+  const { mapId } = useParams();
   const [username, setUsername] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
   const url = import.meta.env.VITE_BACKEND_URL + "leaderboard";

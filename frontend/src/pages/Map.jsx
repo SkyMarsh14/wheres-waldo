@@ -4,6 +4,7 @@ import MapContext from "../util/MapContext.js";
 import { useParams } from "react-router-dom";
 import Targets from "../components/Targets.jsx";
 import Popup from "../components/Popup.jsx";
+import ClearPopup from "../components/ClearPopup.jsx";
 import saveSession from "../util/saveSessionId.js";
 const Wrapper = styled.div`
   position: relative;
@@ -19,6 +20,7 @@ const Map = () => {
   const [points, setPoints] = useState({ x: 0, y: 0 });
   const [target, setTarget] = useState(null);
   const [map, setMap] = useState(null);
+  const [clear, setClear] = useState(false);
   const imgRef = useRef(null);
   const { mapId } = useParams();
   const intervalRef = useRef();
@@ -72,6 +74,8 @@ const Map = () => {
     timer,
     setPopup,
     setTarget,
+    intervalRef,
+    setClear,
   };
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Internal Error: {error}</p>;
@@ -82,6 +86,7 @@ const Map = () => {
         <StyledImg src={map.url} onClick={handleClick} ref={imgRef}></StyledImg>
         {popup && <Popup points={points}></Popup>}
       </Wrapper>
+      {clear && <ClearPopup />}
     </MapContext.Provider>
   );
 };

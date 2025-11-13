@@ -40,7 +40,7 @@ const gameController = {
         if (foundAll) {
           return res.json({
             message: `You have found all the targets!`,
-            corret: true,
+            correct: true,
             clear: true,
             session: req.session,
           });

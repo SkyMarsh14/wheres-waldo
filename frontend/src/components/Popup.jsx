@@ -100,11 +100,10 @@ const Popup = ({ points }) => {
     if (!response.correct) {
       return alert(response.message);
     }
-
     setTarget(response.session.targets);
     if (response.clear) {
-      setClear(true);
       clearInterval(intervalRef.current);
+      setClear(true);
     }
   }
   return (
