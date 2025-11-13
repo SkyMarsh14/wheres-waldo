@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useContext } from "react";
-import MapContext from "../../util/MapContext";
+import MapContext from "../util/MapContext";
 import { Timer } from "lucide-react";
-import formatTime from "../../util/formatTime";
+import formatTime from "../util/formatTime";
 import HomeLink from "./HomeLink";
 const StickyContainer = styled.div`
   position: sticky;
@@ -56,18 +56,18 @@ const StopWatch = styled.div`
 `;
 
 const Targets = () => {
-  const { targets, timer } = useContext(MapContext);
+  const { target, timer } = useContext(MapContext);
   return (
     <>
       <Title>Find the following characters in the Map! </Title>
       <StickyContainer>
         <TargetContainer>
-          {targets.map((target) => (
+          {target.map((target) => (
             <Target key={target.name}>
               {target.found ? (
-                <FoundImg src={target.src}></FoundImg>
+                <FoundImg src={target.url}></FoundImg>
               ) : (
-                <Img src={target.src} alt={target.name} />
+                <Img src={target.url} alt={target.name} />
               )}
               <TargetName>{target.name}</TargetName>
             </Target>

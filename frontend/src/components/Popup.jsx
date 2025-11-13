@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled, { keyframes } from "styled-components";
-import MapContext from "../../util/MapContext";
+import MapContext from "../util/MapContext";
 const PopupContainer = styled.div`
   position: absolute;
   top: ${(props) => props.points.y}%;

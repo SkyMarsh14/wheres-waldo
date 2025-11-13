@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import MapContext from "../../util/MapContext";
+import MapContext from "../util/MapContext";
 import { useContext } from "react";
 const Wrapper = styled.div`
   position: absolute;

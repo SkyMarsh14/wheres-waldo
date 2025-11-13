@@ -1,33 +1,50 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import startSession from "../../util/startSession.js";
-import Popup from "./Popup";
 import styled from "styled-components";
-import MapContext from "../../util/MapContext.js";
+import MapContext from "../util/MapContext.js";
+import { useParams } from "react-router-dom";
 import Targets from "./Targets.jsx";
-import Credit from "./Credit.jsx";
-import ClearPopup from "./ClearPopup.jsx";
 const Wrapper = styled.div`
   position: relative;
 `;
 const StyledImg = styled.img`
   padding: 0.5em;
 `;
-const Map = ({ src, alt, target, mapId, credit }) => {
+const Map = () => {
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [timer, setTimer] = useState(null);
   const [popup, setPopup] = useState(null);
   const [points, setPoints] = useState({ x: 0, y: 0 });
-  const [targets, setTargets] = useState(target);
-  const [clear, setClear] = useState({ clear: false, time: null });
+  const [target, setTarget] = useState(null);
+  const [map, setMap] = useState(null);
   const imgRef = useRef(null);
+  const { mapId } = useParams();
   const intervalRef = useRef();
+  const url = import.meta.env.VITE_BACKEND_URL + `game/start/${mapId}`;
+
   useEffect(() => {
+    async function fetchData() {
+      try {
+        setLoading(true);
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error(`Server error ${res.status}`);
+        }
+        const json = await res.json();
+        setTarget(json.targetData);
+        setMap(json.mapData);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
     intervalRef.current = setInterval(() => {
       setTimer((prev) => prev + 1);
     }, 1000);
-    startSession();
     return () => clearInterval(intervalRef.current);
   }, []);
-
   function handleClick(e) {
     setPopup((prev) => (prev ? false : true));
     const offset = {
@@ -47,29 +64,14 @@ const Map = ({ src, alt, target, mapId, credit }) => {
       y: (relative.y / imgSize.height) * 100,
     });
   }
-  const contextValue = useMemo(
-    () => ({
-      targets,
-      mapId,
-      setTargets,
-      setPopup,
-      timer,
-      credit,
-      clear,
-      setClear,
-      intervalRef,
-    }),
-    [targets, mapId, timer, credit, clear, intervalRef]
-  );
+  const contextValue = {
+    target,
+  };
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Internal Error: {error}</p>;
   return (
     <MapContext.Provider value={contextValue}>
       <Targets></Targets>
-      <Wrapper>
-        <StyledImg src={src} alt={alt} onClick={handleClick} ref={imgRef} />
-        {popup && <Popup points={points} />}
-        <Credit></Credit>
-      </Wrapper>
-      {clear.clear && <ClearPopup />}
     </MapContext.Provider>
   );
 };

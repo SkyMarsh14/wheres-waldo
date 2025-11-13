@@ -2,7 +2,7 @@ import { useContext, useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWindowSize } from "react-use";
 import Confetti from "react-confetti";
-import MapContext from "../../util/MapContext";
+import MapContext from "../util/MapContext";
 import styled from "styled-components";
 const Wrapper = styled.dialog`
   position: fixed;
