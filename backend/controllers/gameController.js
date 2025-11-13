@@ -53,6 +53,10 @@ const gameController = {
         });
       }
     }
+    return res.json({
+      message: `Incorrect. Give another try!`,
+      correct: false,
+    });
   },
 };
 
