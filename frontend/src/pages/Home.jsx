@@ -14,20 +14,43 @@ const H1 = styled.h1`
   font-size: 1.3em;
   margin-bottom: 3em;
 `;
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+`;
 const StartBtn = styled.button`
-  display: block;
-  margin: auto;
   background-color: #3181ce;
   border: none;
   border-radius: 5px;
   color: white;
   padding: 0.5em 1.5em;
-  margin-top: 2em;
   cursor: pointer;
   &:hover {
     filter: brightness(0.8);
   }
 `;
+const LeaderboardLink = styled.button`
+  border-radius: 5px;
+  background-color: white;
+  color: #858585;
+  border: #858585 1px solid;
+  padding: 0.5em 1.5em;
+  &:hover {
+    filter: brightness(0.8);
+  }
+`;
+const LeaderboardNavigation = () => {
+  const navigate = useNavigate();
+  return (
+    <LeaderboardLink
+      onClick={() => navigate("/leaderboard/1", { viewTransition: true })}
+    >
+      Leaderboard
+    </LeaderboardLink>
+  );
+};
 const NavigateButton = () => {
   const navigate = useNavigate();
   return (
@@ -56,7 +79,10 @@ const Home = () => {
           leaderboard if you solve it fast!
         </div>
       </Welcome>
-      <NavigateButton />
+      <ButtonContainer>
+        <NavigateButton />
+        <LeaderboardNavigation />
+      </ButtonContainer>
     </Wrapper>
   );
 };
