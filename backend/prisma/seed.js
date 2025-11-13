@@ -34,6 +34,51 @@ async function main() {
       },
     ],
   });
+  const inTownMap = await prisma.map.create({
+    data: {
+      name: "In Town",
+      url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763032554/inTown_beip8x.jpg",
+    },
+  });
+  const inTownTargets = await prisma.target.createMany({
+    data: [
+      {
+        name: "Waldo",
+        coordinateX: 43,
+        coordinateY: 76,
+        mapId: inTownMap.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037416/waldo_qyyrgo.jpg",
+      },
+      {
+        name: "Odlaw",
+        coordinateX: 59,
+        coordinateY: 94,
+        mapId: inTownMap.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037415/odlaw_wravdx.jpg",
+      },
+      {
+        name: "Woof",
+        coordinateX: 57,
+        coordinateY: 32,
+        mapId: inTownMap.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037414/woof_zvcw9w.jpg",
+      },
+      {
+        name: "Wizard Whitebeard",
+        coordinateX: 65,
+        coordinateY: 77,
+        mapId: inTownMap.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037415/wizardWhiteBeard_aif6wo.jpg",
+      },
+      {
+        name: "Wenda",
+        coordinateX: 44,
+        coordinateY: 61,
+        mapId: inTownMap.id,
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1763037415/wenda_zgbcuc.jpg",
+      },
+    ],
+  });
   const leaderboard = await prisma.leaderboard.createMany({
     data: [
       { username: "ShadowFox", mapId: pokemonMap.id, timeSeconds: 95.32 },

@@ -18,7 +18,7 @@ class SessionManager {
       targets[index] = { ...t, found: false }; // Add found status to the original array.
     });
     this.sessions.set(sessionId, {
-      startTime: null,
+      startTime: new Date(),
       endTime: null,
       resultTime: null,
       targets: [...targets],
@@ -31,11 +31,6 @@ class SessionManager {
   }
   get(sessionId) {
     return this.sessions.get(sessionId) ?? null;
-  }
-  setStartTime(sessionId) {
-    const session = this.get(sessionId);
-    if (!session) return false;
-    session.startTime = session.startTime ?? new Date();
   }
   setEndTime(sessionId) {
     const session = this.get(sessionId);
@@ -50,6 +45,10 @@ class SessionManager {
       throw new Error(`The target has already been found.`);
     }
     session.targets[index].found = true;
+    if (session.targets.every((element) => element.found == true)) {
+      session.endTime = new Date();
+      session.resultTime = session.endTime - session.startTime;
+    }
     return session.targets;
   }
 }

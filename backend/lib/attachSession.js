@@ -3,7 +3,6 @@ const attachSession = async (req, res, next) => {
   let sessionId = req.headers.authorization;
   if (sessionId == undefined || sessionId == "undefined") {
     const session = await sessionManager.createSession(req.params.mapId);
-    sessionManager.setStartTime(sessionId);
     req.session = {
       id: sessionId,
       ...session,

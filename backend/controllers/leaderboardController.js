@@ -2,7 +2,7 @@ import sessionManager from "../lib/sessionManager.js";
 import prisma from "../db/prisma.js";
 const leaderboardController = {
   add: async (req, res) => {
-    const time = sessionManager.getResult(req.headers.authorization);
+    const time = req.session.resultTime;
     const seconds = time / 1000;
     const mapId = Number(req.body.mapId);
     const username = req.body.username;
@@ -22,6 +22,7 @@ const leaderboardController = {
       }
     }
     const record = await prisma.leaderboard.upsert({
+      //Overwrite the username if better score was created.
       where: {
         mapId_username: {
           mapId,
