@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import pokemonMap from "../assets/maps/pokemon.jpeg";
 import { useNavigate } from "react-router-dom";
-const maps = [{ img: pokemonMap, name: "Pokè Vacay", id: 1 }];
+import useGet from "../hooks/useGet";
 const MapsWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  grid-template-rows: 350px;
+  grid-auto-rows: 350px;
   padding: 1em;
+  grid-row-gap: 2em;
   justify-content: center;
 `;
 const Card = styled.div`
@@ -36,14 +36,18 @@ const MapName = styled.div`
 `;
 const MapSelection = () => {
   const navigate = useNavigate();
+  const url = import.meta.env.VITE_BACKEND_URL + "map/all";
+  const { data, error, loading } = useGet(url);
   function handleClick(e, id) {
     navigate(`/maps/${id}`, { viewTransition: true });
   }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Server Error</p>;
   return (
     <MapsWrapper>
-      {maps.map((map) => (
+      {data.map((map) => (
         <Card key={map.id} onClick={(e) => handleClick(e, map.id)}>
-          <Img src={map.img}></Img>
+          <Img src={map.url}></Img>
           <MapName>{map.name}</MapName>
         </Card>
       ))}

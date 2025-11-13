@@ -29,6 +29,8 @@ const Option = styled.button`
     content: "";
     background-image: url(${(props) => props.src});
     background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     width: 1.5em;
     height: 1.5em;
   }

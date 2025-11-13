@@ -15,7 +15,7 @@ function useGet(url) {
             Authorization: localStorage.getItem("sessionId"),
           },
         });
-        if (!req.ok) {
+        if (!res.ok) {
           throw new Error(`Sever error:${res.status}`);
         }
         const json = await res.json();
