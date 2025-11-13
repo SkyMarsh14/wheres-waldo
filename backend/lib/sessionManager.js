@@ -10,16 +10,24 @@ class SessionManager {
       },
       select: {
         id: true,
+        name: true,
+        url: true,
       },
+    });
+    targets.forEach((t, index) => {
+      targets[index] = { ...t, found: false }; // Add found status to the original array.
     });
     this.sessions.set(sessionId, {
       startTime: null,
       endTime: null,
       resultTime: null,
-      notFound: targets,
-      mapId,
+      targets: [...targets],
+      mapId: Number(mapId),
     });
-    return sessionId;
+    return {
+      id: sessionId,
+      ...this.get(sessionId),
+    };
   }
   get(sessionId) {
     return this.sessions.get(sessionId) ?? null;
@@ -35,13 +43,14 @@ class SessionManager {
     session.endTime = session.endTime ?? new Date();
     session.resultTime = session.endTime - session.startTime;
   }
-  async removeRemainingTarget(sessionId, targetId) {
+  async updateTargetFoundStatus(sessionId, targetId) {
     const session = this.get(sessionId);
-    if (!session.has(targetId)) {
-      throw new Error("This target has already been found.");
+    const index = session.targets.findIndex((e) => e.id == targetId);
+    if (session.targets[index].found) {
+      throw new Error(`The target has already been found.`);
     }
-    session.notFound.delete(targetId);
-    return session.notFound;
+    session.targets[index].found = true;
+    return session.targets;
   }
 }
 

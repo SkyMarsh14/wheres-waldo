@@ -16,14 +16,14 @@ async function main() {
         coordinateX: 22,
         coordinateY: 50,
         mapId: pokemonMap.id,
-        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1762930561/meowthImg_qfqt2z.png",
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1762930562/psyduckImg_sj54kb.png",
       },
       {
         name: "Meowth",
         coordinateX: 45,
         coordinateY: 15,
         mapId: pokemonMap.id,
-        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1762930562/psyduckImg_sj54kb.png",
+        url: "https://res.cloudinary.com/dzor53b0k/image/upload/v1762930561/meowthImg_qfqt2z.png",
       },
       {
         name: "Shellder",

@@ -3,5 +3,5 @@ import { Router } from "express";
 import attachSession from "../lib/attachSession.js";
 const gameRouter = Router();
 gameRouter.get("/start/:mapId", attachSession, gameController.start);
-gameRouter.post("/guess/:mapId", attachSession, gameController.guess);
+gameRouter.post("/guess", attachSession, gameController.guess);
 export default gameRouter;
