@@ -70,7 +70,7 @@ const Leaderboard = () => {
       .then((response) => setData(response))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, []);
+  }, [url]);
   if (loading) return <p>loading...</p>;
   if (error) return <p>A network error was encountered</p>;
 

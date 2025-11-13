@@ -3,13 +3,21 @@ class SessionManager {
   constructor() {
     this.sessions = new Map();
   }
-  createSession(sessionId = crypto.randomUUID()) {
+  async createSession(mapId, sessionId = crypto.randomUUID()) {
+    const targets = await prisma.target.findMany({
+      where: {
+        mapId: Number(mapId),
+      },
+      select: {
+        id: true,
+      },
+    });
     this.sessions.set(sessionId, {
       startTime: null,
       endTime: null,
       resultTime: null,
-      found: new Set(),
-      cleared: false,
+      notFound: targets,
+      mapId,
     });
     return sessionId;
   }
@@ -19,31 +27,21 @@ class SessionManager {
   setStartTime(sessionId) {
     const session = this.get(sessionId);
     if (!session) return false;
-    session.startTime = session.startTime ?? Date.now();
+    session.startTime = session.startTime ?? new Date();
   }
   setEndTime(sessionId) {
     const session = this.get(sessionId);
     if (!session) return false;
-    session.endTime = session.endTime ?? Date.now();
+    session.endTime = session.endTime ?? new Date();
     session.resultTime = session.endTime - session.startTime;
   }
-  async addFoundTarget(sessionId, mapId, targetId) {
+  async removeRemainingTarget(sessionId, targetId) {
     const session = this.get(sessionId);
-    const targets = await prisma.target.findMany({
-      where: {
-        mapId: mapId,
-      },
-      select: {
-        id: true,
-      },
-    });
-    if (session.found.has(targetId)) {
-      throw new Error("The selected target has already been found.");
+    if (!session.has(targetId)) {
+      throw new Error("This target has already been found.");
     }
-    session.found.add(targetId);
-    if (targets.length == session.found.size) {
-      session.cleared = true;
-    }
+    session.notFound.delete(targetId);
+    return session.notFound;
   }
 }
 

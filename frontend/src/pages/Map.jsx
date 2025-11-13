@@ -2,7 +2,8 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import MapContext from "../util/MapContext.js";
 import { useParams } from "react-router-dom";
-import Targets from "./Targets.jsx";
+import Targets from "../components/Targets.jsx";
+import Popup from "../components/Popup.jsx";
 const Wrapper = styled.div`
   position: relative;
 `;
@@ -33,6 +34,9 @@ const Map = () => {
         const json = await res.json();
         setTarget(json.targetData);
         setMap(json.mapData);
+        intervalRef.current = setInterval(() => {
+          setTimer((prev) => prev + 1);
+        }, 1000);
       } catch (err) {
         setError(err);
       } finally {
@@ -40,9 +44,6 @@ const Map = () => {
       }
     }
     fetchData();
-    intervalRef.current = setInterval(() => {
-      setTimer((prev) => prev + 1);
-    }, 1000);
     return () => clearInterval(intervalRef.current);
   }, []);
   function handleClick(e) {
@@ -66,12 +67,17 @@ const Map = () => {
   }
   const contextValue = {
     target,
+    timer,
   };
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Internal Error: {error}</p>;
   return (
     <MapContext.Provider value={contextValue}>
       <Targets></Targets>
+      <Wrapper>
+        <StyledImg src={map.url} onClick={handleClick} ref={imgRef}></StyledImg>
+        {popup && <Popup points={points}></Popup>}
+      </Wrapper>
     </MapContext.Provider>
   );
 };

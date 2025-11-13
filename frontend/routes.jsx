@@ -1,6 +1,6 @@
 import App from "./src/App";
 import Home from "./src/pages/Home";
-import Map from "./src/components/Map";
+import Map from "./src/pages/Map";
 import Error from "./src/pages/Error";
 import MapSelection from "./src/pages/MapSelection";
 import Leaderboard from "./src/pages/Leaderboard";

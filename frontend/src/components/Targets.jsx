@@ -57,6 +57,7 @@ const StopWatch = styled.div`
 
 const Targets = () => {
   const { target, timer } = useContext(MapContext);
+  target;
   return (
     <>
       <Title>Find the following characters in the Map! </Title>
@@ -65,9 +66,15 @@ const Targets = () => {
           {target.map((target) => (
             <Target key={target.name}>
               {target.found ? (
-                <FoundImg src={target.url}></FoundImg>
+                <FoundImg
+                  src={target.url}
+                  alt={`Pokemon: ${target.name}`}
+                ></FoundImg>
               ) : (
-                <Img src={target.url} alt={target.name} />
+                <Img
+                  src={target.url}
+                  alt={`Pokemon: ${target.name} grayed out`}
+                />
               )}
               <TargetName>{target.name}</TargetName>
             </Target>

@@ -72,18 +72,18 @@ const ringeringAnimation = keyframes`
 const Ringering = styled(Dot)`
   animation: 1.5s ${ringeringAnimation} infinite;
 `;
-const checkGameComplete = (targets) => {
-  return targets.every((target) => target.found);
+const checkGameComplete = (target) => {
+  return target.every((target) => target.found);
 };
 const Popup = ({ points }) => {
-  const { targets, mapId, setTargets, setPopup, setClear, intervalRef } =
+  const { target, mapId, setTargets, setPopup, setClear, intervalRef } =
     useContext(MapContext);
-  async function handleClick(e, name, points) {
+  async function handleClick(e, id, points) {
     e.preventDefault();
     const payload = {
       coordinateX: points.x,
       coordinateY: points.y,
-      name,
+      id,
       mapId,
     };
     const sessionId = localStorage.getItem("sessionId");
@@ -103,7 +103,7 @@ const Popup = ({ points }) => {
     if (!response.correct) {
       return alert(response.message);
     }
-    const updatedTargets = targets.map((item) => ({
+    const updatedTargets = target.map((item) => ({
       ...item,
       found: item.name === name ? true : item.found,
     }));
@@ -126,13 +126,13 @@ const Popup = ({ points }) => {
   return (
     <>
       <PopupContainer points={points}>
-        {targets
+        {target
           .filter((target) => !target.found)
           .map((target, index) => (
             <Option
               key={index}
-              src={target.src}
-              onClick={(e) => handleClick(e, target.name, points)}
+              src={target.url}
+              onClick={(e) => handleClick(e, target.id, points)}
             >
               {target.name}
             </Option>
