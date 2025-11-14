@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom";
 import medal from "../assets/medal.png";
 import styled from "styled-components";
 import HomeLink from "../components/HomeLink";
-import Dropdown from "../components/dropdown";
 const Table = styled.table`
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
