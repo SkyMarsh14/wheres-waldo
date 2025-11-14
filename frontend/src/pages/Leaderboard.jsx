@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import medal from "../assets/medal.png";
 import styled from "styled-components";
 import HomeLink from "../components/HomeLink";
+import Dropdown from "../components/dropdown";
 const Table = styled.table`
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -49,38 +50,42 @@ const Tr = styled.tr`
   }
 `;
 const Leaderboard = () => {
-  const params = useParams();
-  const url = import.meta.env.VITE_BACKEND_URL + "leaderboard/" + params.mapId;
-  const [data, setData] = useState(null);
+  const { mapId } = useParams();
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
+  const [map, setMap] = useState(null);
+  const [leaderboard, setLeaderboard] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    async function getData() {
-      const response = await fetch(url).then((res) => res.json());
-      return response;
-    }
-    setData(getData());
-    fetch(url, { mode: "cors" })
-      .then((response) => {
-        if (response.status >= 400) {
-          throw new Error("server error");
-        }
-        return response.json();
-      })
-      .then((response) => setData(response))
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
-  }, [url]);
+    (async () => {
+      try {
+        const [lbRes, mapRes] = await Promise.all([
+          fetch(baseUrl + `leaderboard/${mapId}`),
+          fetch(baseUrl + `map/all`),
+        ]);
+        const [lbJson, mapJson] = await Promise.all([
+          lbRes.json(),
+          mapRes.json(),
+        ]);
+        setMap(mapJson);
+        setLeaderboard(lbJson);
+      } catch (err) {
+        setError(err);
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
   if (loading) return <p>loading...</p>;
   if (error) return <p>A network error was encountered</p>;
-
   return (
     <>
       <Wrapper>
         <Table>
           <Caption>
             <MedalIcon />
-            Ranking: {data.mapName}
+            {leaderboard.mapName}
             <MedalIcon />
           </Caption>
           <thead>
@@ -91,7 +96,7 @@ const Leaderboard = () => {
             </Tr>
           </thead>
           <tbody>
-            {data.record.map((record, index) => (
+            {leaderboard.record.map((record, index) => (
               <Tr key={record.id}>
                 <Td>{index + 1}</Td>
                 <Td>{record.username}</Td>

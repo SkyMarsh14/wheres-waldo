@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import useGet from "../hooks/useGet";
 const MapsWrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, max-content));
   grid-auto-rows: 350px;
   padding: 1em;
   grid-row-gap: 2em;
-  justify-content: center;
+  justify-content: space-evenly;
 `;
 const Card = styled.div`
   display: grid;
