@@ -1,9 +1,11 @@
 # Where’s Waldo – Photo Tagging App
 
 A full-stack interactive “Where’s Waldo” style game built with **React**, **Node.js**, **Express**, **Prisma**, and **PostgreSQL**.  
-Users search for hidden characters on detailed maps, and the app records how long it takes them to complete each level.
+Users search for hidden characters on detailed maps, and the app records how long it takes them to complete each level. Users' best records can be access from `/leaderbord`.
 
----
+This project is deployed on **Railway** for PostgreSQL database, and Node.js server, and **Netlify** for hosting the React frontend applicaiton.
+
+Live version is available: https://findwaldo.netlify.app/
 
 ## 🚀 Features
 
